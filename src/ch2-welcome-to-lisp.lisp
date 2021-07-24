@@ -1,8 +1,8 @@
-;; 2.4
+;; 2.4 List Operations
 
 (third '(a b c d))
 
-;; 2.5
+;; 2.5 Truth
 
 (listp '(1 2 3))
 
@@ -26,7 +26,7 @@
 
 (or nil 27)
 
-;; 2.6
+;; 2.6 Functions
 
 (defun our-third (lst)
   (car (cdr (cdr lst))))
@@ -39,7 +39,7 @@
 
 (sum-greater 1 4 3)
 
-;; 2.7
+;; 2.7 Recursion
 
 (defun our-member (obj lst)
   (if (null lst)
@@ -50,7 +50,7 @@
 
 (our-member 2 '(1 3 2 a 4))
 
-;; 2.9
+;; 2.9 Input and Output
 
 (format t "~A plus ~A equals ~A.~%" 2 3 (+ 2 3))
 
@@ -62,7 +62,7 @@
 ;; Works when called from repl.
 (askem "How old are you? ")
 
-;; 2.10
+;; 2.10 Variables
 
 (let ((x 1) (y 2))
   (+ x y))
@@ -80,7 +80,7 @@
 
 (boundp '*glob*)
 
-;; 2.11
+;; 2.11 Assignment
 
 (setf *glob* 98)
 
@@ -88,7 +88,7 @@
   (setf n 2)
   n)
 
-;; implicit declaration
+;; implicit declaration (bad)
 (setf x (list 'a 'b 'c))
 
 (setf (car x) 'n)
@@ -97,7 +97,7 @@
       c 'd
       e 'f)
 
-;; 2.12
+;; 2.12 Functional Programming
 
 (setf lst '(c a r a t))
 
@@ -107,7 +107,7 @@
 
 (setf x (remove 'a x))
 
-;; 2.13
+;; 2.13 Iteration
 
 (defun show-squares (start end)
   (do ((i start (+ i 1)))
@@ -140,7 +140,7 @@
 
 (our-length '(a b c))
 
-;; 2.14
+;; 2.14 Functions as Objects
 
 (function +)
 
@@ -162,6 +162,6 @@
 (funcall #'(lambda (x) (+ x 100))
          1)
 
-;; 2.15
+;; 2.15 Types
 
 (typep 27 'integer)

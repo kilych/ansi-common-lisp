@@ -1,16 +1,18 @@
-;; 1.1
+;; 1.1 New Tools
 
 (defun sum (n)
   (let ((s 0))
     (dotimes (i n s)
       (incf s i))))
 
-(= (sum 5) 10)
+(sum 5)
+;; => 10
 
 (defun addn (n)
   #'(lambda (x) (+ x n)))
 
 (funcall (addn 4) 2)
+;; => 6
 
 ;; optional
 
@@ -20,3 +22,4 @@
       (setf s (funcall (addn n) s)))))
 
 (addn-times 2 10)
+;; => 20
