@@ -462,8 +462,8 @@ NIL
 (our-assoc '* trans)
 NIL
 
-;; Like member, the real assoc takes keyword arguments, including :
-;; test and :key. Common Lisp also defines an assoc-if, which is to
+;; Like member, the real assoc takes keyword arguments, including
+;; :test and :key. Common Lisp also defines an assoc-if, which is to
 ;; assoc what member-if is to member.
 
 (assoc '(a) '(((a) . b) (z)))
