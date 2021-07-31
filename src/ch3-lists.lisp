@@ -1,4 +1,4 @@
-;; 3.1 Conses
+;;; 3.1 Conses
 
 (defun our-listp (x)
   (or (null x) (consp x)))
@@ -31,7 +31,7 @@ T
 (listp nil)
 T
 
-;; 3.2 Equality
+;;; 3.2 Equality
 
 ;; eql returns true only if its arguments are the same object.
 
@@ -43,7 +43,7 @@ NIL
 (eql x x)
 T
 
-;; equal, essentially, returns true if its arguments would print the
+;; > equal, essentially, returns true if its arguments would print the
 ;; same:
 
 (equal x (cons 'a nil))
@@ -60,7 +60,7 @@ T
 (our-equal x (cons 'a nil))
 T
 
-;; 3.3 Why Lisp Has No Pointers
+;;; 3.3 Why Lisp Has No Pointers
 
 (setf x '(a b c))
 (setf y x)
@@ -68,10 +68,10 @@ T
 (eql x y)
 T
 
-;; The reason Lisp has no pointers is that every value is conceptually
+;; > The reason Lisp has no pointers is that every value is conceptually
 ;; a pointer.
 
-;; 3.4 Building Lists
+;;; 3.4 Building Lists
 
 (setf x '(a b c)
       y (copy-list x))
@@ -100,7 +100,7 @@ T
 (eql '(a b) (append '(a b)))
 NIL
 
-;; 3.5 Example: Compression
+;;; 3.5 Example: Compression
 
 ;; run-length encoding
 
@@ -192,7 +192,7 @@ NIL
 (uncompress '((3 1) 0 1 (4 0) 1))
 ;; (1 1 1 0 1 0 0 0 0 1)
 
-;; 3.6 Access
+;;; 3.6 Access
 
 (nth 0 '(a b c))
 ;; A
@@ -209,7 +209,7 @@ NIL
 (tenth '(1 2 3 4 5 6 7 8 9 10 11))
 10
 
-;; 3.7 Mapping Functions
+;;; 3.7 Mapping Functions
 
 (mapcar #'(lambda (x) (+ x 10))
         '(1 2 3))
@@ -220,13 +220,13 @@ NIL
         '(1 2 3 4))
 ;; ((A 1) (B 2) (C 3))
 
-;; The related maplist takes the same arguments, but calls the
+;; > The related maplist takes the same arguments, but calls the
 ;; function on successive cdrs of the lists:
 (maplist #'(lambda (x) x)
          '(a b c))
 ;; ((A B C) (B C) (C))
 
-;; 3.8 Trees
+;;; 3.8 Trees
 
 (defun our-copy-tree (tr)
   (if (atom tr)
@@ -265,20 +265,20 @@ NIL
 ;;  (INTEGERP Y)
 ;;  (ZEROP (MOD Y 2)))
 
-;; 3.9 Understanding Recursion
+;;; 3.9 Understanding Recursion
 
 (defun len (lst)
   (if (null lst)
       0
       (+ (len (cdr lst)) 1)))
 
-;; We can assures ourselves that this function is correctby verifying
+;; > We can assures ourselves that this function is correctly verifying
 ;; two things:
 ;; 1. That it works for lists of length 0. [Base case.]
 ;; 2. Given that it works ofr lists of length n, that it also works
 ;; for lists of length n + 1.
 
-;; 3.10 Sets
+;;; 3.10 Sets
 
 (member 'b '(a b c))
 ;; (B C)
@@ -333,12 +333,12 @@ NIL
 (set-difference '(a b c d e) '(b e))
 ;; (D C A)
 
-;; Since there is no notion of ordering in a set, these functions do
+;; > Since there is no notion of ordering in a set, these functions do
 ;; not necessarily bother to preservethe order of elements found in
 ;; the original lists. The call to set-difference might just as well
 ;; have returned (d c a), for example.
 
-;; 3.11 Sequences
+;;; 3.11 Sequences
 
 ;; In Common Lisp, sequences include both lists and vectors.
 
@@ -374,7 +374,7 @@ T
 (every #'> '(1 3 5) '(0 2 4))
 T
 
-;; 3.12 Stacks
+;;; 3.12 Stacks
 
 ;; Macros push and pop are defined in terms of setf. It's easy to
 ;; translate calls if the arguments are constants or variables.
@@ -422,7 +422,7 @@ y
   x)
 ;; (C A B)
 
-;; 3.13 Dotted Lists
+;;; 3.13 Dotted Lists
 
 ;; not works for cyclic lists
 (defun proper-list? (lst)
@@ -436,7 +436,7 @@ y
 (cons 'a (cons 'b (cons 'c 'd)))
 ;; (A B C . D)
 
-;; 3.14 Assoc-lists
+;;; 3.14 Assoc-lists
 
 (setf trans '((+ . "add") (- . "subtract")))
 ;; ((+ . "add") (- . "subtract"))
@@ -462,7 +462,7 @@ NIL
 (our-assoc '* trans)
 NIL
 
-;; Like member, the real assoc takes keyword arguments, including
+;; > Like member, the real assoc takes keyword arguments, including
 ;; :test and :key. Common Lisp also defines an assoc-if, which is to
 ;; assoc what member-if is to member.
 
@@ -481,22 +481,22 @@ NIL
 (assoc-if #'oddp '((2 a) (3 b) (4 c)))
 ;; (3 B)
 
-;; 3.15 Example: Shortest Path
+;;; 3.15 Example: Shortest Path
 
-;; 3.16 Garbage
+;;; 3.16 Garbage
 
-;; Where does garbage come from? Let's create some:
+;; > Where does garbage come from? Let's create some:
 (setf lst (list 'a 'b 'c))
 ;; (A B C)
 
 (setf lst nil)
 NIL
 
-;; Actually, we do have a way of reaching the list, for a bit. The
+;; > Actually, we do have a way of reaching the list, for a bit. The
 ;; globals *, **, and *** are always set to the the last three values
 ;; returned to the toplevel. These variables are useful in debugging.
 
-;; Consing is ok in prototypes and experiments, at least. And if you
+;; > Consing is ok in prototypes and experiments, at least. And if you
 ;; take advantage of the flexibility that lists give you in the early
 ;; stages of a program, you're more likely to produce something that
 ;; survives to the later stages.
