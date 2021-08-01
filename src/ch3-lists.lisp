@@ -556,3 +556,63 @@ NIL
 ;; take advantage of the flexibility that lists give you in the early
 ;; stages of a program, you're more likely to produce something that
 ;; survives to the later stages.
+
+;;; Exercises
+
+;; 3.x.8
+
+;; Define a function that takes a list and prints it in dot notation:
+
+(defun showdots (lst)
+  (if (atom lst)
+      (format t "~A" lst)
+      (progn
+        (format t "(")
+        (showdots (car lst))
+        (format t " . ")
+        (showdots (cdr lst))
+        (format t ")"))))
+
+(showdots '(a b c))
+;; (A . (B . (C . NIL)))
+
+NIL
+
+;; 3.x.9
+
+;; Write a program to find the longest finite path through a network
+;; represented as in Section 3.15. The network may contain cycles.
+
+(defun longest-path (start finish net)
+  (let ((longest-path-p #'(lambda (path) (equal (car path) finish))))
+    (do ((pathes (list (list start)) (expand-unfinished-pathes pathes finish net))
+         (longest-path nil (car (member-if longest-path-p pathes))))
+        ((null pathes) (reverse longest-path)))))
+
+(defun expand-unfinished-pathes (pathes finish net)
+  (apply #'append
+         (mapcar #'(lambda (path) (expand-unfinished-path path finish net))
+                 pathes)))
+
+(defun expand-unfinished-path (path finish net)
+  (let ((node (car path)))
+    (if (eql node finish)
+        '()
+        (let ((pathes '())
+              (neighbors (cdr (assoc node net))))
+          (dolist (neighbor neighbors)
+            (when (not (member neighbor path))
+              (push (cons neighbor path) pathes)))
+          pathes))))
+
+;; TEST:
+(let ((min '((a b c) (b c) (c d))))
+  (longest-path 'a 'd min))
+;; (A B C D)
+
+;; TEST: with cycle
+(let ((min '((a b c) (b c) (c a d))))
+  (longest-path 'a 'd min))
+;; (A B C D)
+
+;; TODO: more tests
