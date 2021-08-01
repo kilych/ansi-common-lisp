@@ -483,6 +483,62 @@ NIL
 
 ;;; 3.15 Example: Shortest Path
 
+;; My guess
+
+(defun my-shortest-path (start finish net)
+  (let ((shortest-path-p #'(lambda (path) (equal (car path) finish))))
+    (do ((pathes (list (list start)) (expand-pathes pathes net))
+         (shortest-path nil (car (member-if shortest-path-p pathes))))
+        ((or (null pathes)
+             (not (null shortest-path)))
+         (reverse shortest-path)))))
+
+(defun expand-pathes (pathes net)
+  (apply #'append
+         (mapcar #'(lambda (path) (expand-path path net))
+                 pathes)))
+
+(defun expand-path (path net)
+  (let ((node (car path))
+        (pathes '()))
+    (let ((neighbors (cdr (assoc node net))))
+      (dolist (neighbor neighbors)
+        (when (not (member neighbor path))
+          (push (cons neighbor path) pathes))))
+    pathes))
+
+;; TEST:
+(let ((min '((a b c) (b c) (c d))))
+  (my-shortest-path 'a 'd min))
+;; (A C D)
+
+;; Graham's
+
+(defun shortest-path (start end net)
+  (breadth-first-search end (list (list start)) net))
+
+(defun breadth-first-search (end queue net)
+  (if (null queue)
+      nil
+      (let ((path (car queue)))
+        (let ((node (car path)))
+          (if (eql node end)
+              (reverse path)
+              (breadth-first-search end
+                                    (append (cdr queue)
+                                            (new-paths path node net))
+                                    net))))))
+
+(defun new-paths (path node net)
+  (mapcar #'(lambda (n)
+              (cons n path))
+          (cdr (assoc node net))))
+
+;; TEST:
+(let ((min '((a b c) (b c) (c d))))
+  (shortest-path 'a 'd min))
+;; (A C D)
+
 ;;; 3.16 Garbage
 
 ;; > Where does garbage come from? Let's create some:
